@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.coolinc.dao.CodeDao" >
+  <resultMap id="BaseResultMap" type="cn.coolinc.entity.Code" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="value" property="value" jdbcType="VARCHAR" />
+    <result column="seq" property="seq" jdbcType="INTEGER" />
+    <result column="enable" property="enable" jdbcType="BIT" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="save" parameterType="cn.coolinc.entity.Code">
+	  insert into ss_code (id, type, code, 
+      name, value, seq, enable, 
+      description)
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, #{enable,jdbcType=BIT}, 
+      #{description,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from ss_code where id = #{id}
+	</delete>
+	
+	<update id="update" parameterType="cn.coolinc.entity.Code">
+	   update ss_code
+    set id = #{record.id,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      value = #{record.value,jdbcType=VARCHAR},
+      seq = #{record.seq,jdbcType=INTEGER},
+      enable = #{record.enable,jdbcType=BIT},
+      description = #{record.description,jdbcType=VARCHAR}
+	</update>
+	
+	<sql id="whereClause">
+		<where>
+			<if test="type != null">
+				and type = #{type,jdbcType=VARCHAR}
+			</if>
+			<if test="code != null">
+				and code = #{code,jdbcType=VARCHAR}
+			</if>
+			<if test="name != null">
+				and name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="value != null">
+				and value = #{value,jdbcType=VARCHAR}
+			</if>
+			<if test="seq != null">
+				and seq = #{seq,jdbcType=INTEGER}
+			</if>
+			<if test="enable != null">
+				and enable = #{enable,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="findOne" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from ss_code where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="BaseResultMap">
+		select * from ss_code
+		<include refid="whereClause"/>
+	</select>
+</mapper>

@@ -1,0 +1,12 @@
+2013-06-26 14:30:35,484 [qtp17923264-22] WARN  [cn.coolinc.support.web.exception.AnnotationHandlerMethodExceptionResolver] -  exception real message :err invoke,but IOException
+2013-06-26 14:30:35,484 [qtp17923264-22] INFO  [cn.coolinc.web.FooController] - Exception Message:系统未知错误，请联系研发部！
+2013-06-26 14:31:29,500 [qtp17923264-21] WARN  [cn.coolinc.support.web.exception.AnnotationHandlerMethodExceptionResolver] -  exception real message :err invoke,but IOException
+2013-06-26 14:31:29,500 [qtp17923264-21] INFO  [cn.coolinc.web.FooController] - Exception Message:系统未知错误，请联系研发部！
+2013-06-26 14:31:32,875 [qtp17923264-25] WARN  [cn.coolinc.support.web.exception.AnnotationHandlerMethodExceptionResolver] -  exception real message :null
+2013-06-26 14:31:32,875 [qtp17923264-25] INFO  [cn.coolinc.web.FooController] - Exception Message:国际化异常
+2013-06-26 14:38:48,140 [qtp17923264-20] WARN  [cn.coolinc.support.web.exception.AnnotationHandlerMethodExceptionResolver] -  exception real message :err invoke,but IOException
+2013-06-26 14:38:48,140 [qtp17923264-20] INFO  [cn.coolinc.web.FooController] - Exception Message:系统未知错误，请联系研发部！
+2013-06-26 14:38:49,843 [qtp17923264-22] WARN  [cn.coolinc.support.web.exception.AnnotationHandlerMethodExceptionResolver] -  exception real message :err invoke,but IOException
+2013-06-26 14:38:49,843 [qtp17923264-22] INFO  [cn.coolinc.web.FooController] - Exception Message:系统未知错误，请联系研发部！
+2013-06-26 14:38:52,890 [qtp17923264-20] WARN  [cn.coolinc.support.web.exception.AnnotationHandlerMethodExceptionResolver] -  exception real message :null
+2013-06-26 14:38:52,890 [qtp17923264-20] INFO  [cn.coolinc.web.FooController] - Exception Message:国际化异常

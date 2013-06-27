@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>    
+	<bean id="job_1" class="cn.coolinc.service.ScheduleService"></bean>
+	<bean id="jobDetail_1"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="job_1" />
+		</property>
+		<property name="targetMethod">
+			<value>doJob</value>
+		</property>
+	</bean>
+	<bean id="cronTrigger_1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="jobDetail_1" />
+		</property>
+		<property name="cronExpression">
+			<value>*/5 * * * * ?</value>
+		</property>
+	</bean>
+        
+     <!-- 
+     ======================================================================= 
+     	启动调度， 如果将lazy-init='false'那么容器启动就会执行调度程序  
+     ======================================================================= 
+     -->
+      <bean id="startQuertz" lazy-init="true" autowire="no" 
+      		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+          <property name="triggers">
+              <list>
+                  <ref bean="cronTrigger_1"/>
+              </list>
+          </property>
+      </bean>
+</beans>

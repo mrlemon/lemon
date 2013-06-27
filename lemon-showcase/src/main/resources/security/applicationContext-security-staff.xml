@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tool="http://www.springframework.org/schema/tool" xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd"
+	default-lazy-init="true">
+	
+	<!-- Security configuration for administrator -->
+	
+	<http pattern="/static/**" security="none" />
+	<http pattern="/admin/login" security="none" />
+	<http pattern="/admin/login/error/**" security="none" />
+	
+	<http entry-point-ref="adminAuthenticationEntryPoint" authentication-manager-ref="adminAuthenticationManager"
+	      access-denied-page="/403.jsp" auto-config="false" pattern="/admin/**" realm="ADMIN_SECURITY_FILTER" >
+	    <!-- <custom-filter position="CONCURRENT_SESSION_FILTER" ref="adminConcurrencyFilter" /> -->
+		<intercept-url pattern="/admin/**" access="ROLE_ADMINISTATOR_DEFAULT" />
+		<custom-filter position="FORM_LOGIN_FILTER" ref="adminLoginFilter" />
+		<custom-filter position="REMEMBER_ME_FILTER" ref="adminRememberMeFilter"/>
+		<custom-filter position="LOGOUT_FILTER" ref="adminLogoutFilter" />
+		<!-- <session-management session-authentication-strategy-ref="adminConcurrentSessionControlStrategy"/> -->
+		<custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="adminSecurityInterceptor" />
+	</http>
+	
+	<beans:bean id="adminConcurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		  <beans:property name="sessionRegistry" ref="adminSessionRegistry" />
+		  <beans:property name="expiredUrl" value="/admin/login/error/7" />
+	</beans:bean>
+	
+	<beans:bean id="adminConcurrentSessionControlStrategy" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+	  	<beans:constructor-arg name="sessionRegistry" ref="adminSessionRegistry" />
+	  	<beans:property name="maximumSessions" value="1" />
+	  	<beans:property name="exceptionIfMaximumExceeded" value="false"></beans:property>
+	</beans:bean>
+
+	<beans:bean id="adminSessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+	
+	<beans:bean id="adminAuthenticationEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<beans:property name="loginFormUrl" value="/admin/login" />
+	</beans:bean>
+
+	<beans:bean id="adminLoginFilter"
+		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+		<beans:property name="authenticationManager" ref="adminAuthenticationManager" />
+		<beans:property name="authenticationFailureHandler"	ref="adminFailureHandler" />
+		<beans:property name="authenticationSuccessHandler"	ref="adminSuccessHandler" />
+		<beans:property name="filterProcessesUrl" value="/admin/login/submit" />
+		<beans:property name="usernameParameter" value="username" />
+		<beans:property name="passwordParameter" value="password" />
+		<beans:property name="rememberMeServices" ref="adminRememberMeServices" />
+		<!-- <beans:property name="sessionAuthenticationStrategy" ref="adminConcurrentSessionControlStrategy" /> -->
+	</beans:bean>
+	
+	<beans:bean id="adminFailureHandler"
+		class="org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler">
+		<beans:property name="exceptionMappings">
+			<beans:props>				
+				<beans:prop key="org.springframework.security.core.userdetails.UsernameNotFoundException">/admin/login/error/1</beans:prop>
+				<beans:prop key="org.springframework.security.authentication.BadCredentialsException">/admin/login/error/2</beans:prop>
+				<beans:prop key="org.springframework.security.core.AuthenticationException">/admin/login/error/3</beans:prop>
+				<beans:prop key="org.springframework.security.authentication.CredentialsExpiredException">/admin/login/error/4</beans:prop>
+				<beans:prop key="org.springframework.security.authentication.LockedException">/admin/login/error/5</beans:prop>
+				<beans:prop key="org.springframework.security.authentication.DisabledException">/admin/login/error/6</beans:prop>
+			</beans:props>
+		</beans:property>
+		<beans:property name="defaultFailureUrl" value="/admin/login/error/0"></beans:property>
+	</beans:bean>
+
+	<beans:bean id="adminSuccessHandler"
+		class="cn.coolinc.admin.security.AdminAuthenticationSuccessHandler">
+		<beans:property name="alwaysUseDefaultTargetUrl" value="true" />
+		<beans:property name="defaultTargetUrl" value="/admin/index" />
+		<beans:property name="staffLoginService" ref="staffLoginService" />
+		<beans:property name="staffService" ref="staffService" />
+	</beans:bean>
+
+	<beans:bean id="adminLogoutFilter"
+		class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<beans:constructor-arg index="0" value="/admin/login" />
+		<beans:constructor-arg index="1">
+			<beans:list>
+				<beans:ref bean="adminRememberMeServices" />
+				<beans:bean	class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+			</beans:list>
+		</beans:constructor-arg>
+		<beans:property name="filterProcessesUrl" value="/admin/logout" />
+	</beans:bean>
+
+	<beans:bean id="adminSecurityInterceptor"
+		class="cn.coolinc.admin.security.AdminFilterSecurityInterceptorImpl">
+		<beans:property name="authenticationManager" ref="adminAuthenticationManager" />
+		<beans:property name="accessDecisionManager" ref="adminAccessDecisionManagerBean" />
+		<beans:property name="securityMetadataSource" ref="adminSecurityMetadataSource" />
+	</beans:bean>
+
+	<authentication-manager id="adminAuthenticationManager" erase-credentials="false">
+		<authentication-provider ref="adminAuthenticationProvider"></authentication-provider>
+		<authentication-provider ref="adminRememberMeAuthenticationProvider"></authentication-provider>
+	</authentication-manager>
+	
+	<!-- for authunticationProvider and changePassword serlvet bean -->
+	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"></beans:bean>
+	
+	<beans:bean id="adminAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+ 		<beans:property name="passwordEncoder" ref="passwordEncoder"/>
+		<beans:property name="userDetailsService" ref="adminUserDetailService" />
+		<beans:property name="hideUserNotFoundExceptions" value="false"/>
+	</beans:bean>
+
+	<beans:bean id="adminUserDetailService"
+		class="cn.coolinc.admin.security.StaffDetailsService">
+		<beans:property name="staffService" ref="staffService" />
+		<beans:property name="roleStaffService" ref="roleStaffService" />
+	</beans:bean>
+
+	<beans:bean id="adminAccessDecisionManagerBean"
+		class="cn.coolinc.admin.security.AdminAccessDecisionManagerImpl">
+	</beans:bean>
+
+	<beans:bean id="adminSecurityMetadataSource"
+		class="cn.coolinc.admin.security.AdminFilterInvocationSecurityMetadataSourceImpl">
+		<beans:property name="roleResService" ref="roleResService"></beans:property>
+	</beans:bean>
+	
+	<!-- remember me configuration -->
+	<beans:bean id="adminRememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+	  <beans:property name="authenticationManager" ref="adminAuthenticationManager" />
+	  <beans:property name="rememberMeServices" ref="adminRememberMeServices"/> 
+	</beans:bean> 
+
+	 <beans:bean id="adminRememberMeServices" class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
+	 <beans:property name="tokenRepository" ref="adminJdbcTokenRepository"></beans:property>
+	  <beans:property name="userDetailsService" ref="adminUserDetailService"/>
+	  <beans:property name="cookieName" value="ADMIN_MANAGER_COOKIE"/>
+	  <beans:property name="key" value="coolinc2013"/>
+	  <beans:property name="alwaysRemember" value="false" />
+	  <beans:property name="parameter" value="remember_me" />
+	</beans:bean>
+	
+ 	<beans:bean id="adminRememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+  		<beans:property name="key" value="coolinc2013"/>
+	</beans:bean>
+	
+	<beans:bean id="adminJdbcTokenRepository" class="org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl">
+		<beans:property name="createTableOnStartup" value="false" />
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+</beans:beans>

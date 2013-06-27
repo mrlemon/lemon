@@ -1,0 +1,7 @@
+2013-06-17 11:02:39,343 [main] DEBUG [cn.coolinc.utils.log.ChangeLogLevelTest] - log DEBUG 1.
+2013-06-17 11:02:39,343 [main] INFO  [cn.coolinc.utils.log.ChangeLogLevelTest] - log INFO 1.
+2013-06-17 11:02:39,343 [main] INFO  [cn.coolinc.utils.log.ChangeLogLevelTest] - log INFO 2.
+2013-06-17 11:02:39,343 [main] INFO  [cn.coolinc.utils.log.CustomAppenderTest] - hello world!
+2013-06-17 11:02:39,343 [main] SALES [cn.coolinc.utils.log.CustomLogLevelTest] - test custome log level sales.
+2013-06-17 11:02:39,343 [main] ERROR [cn.coolinc.utils.log.MailLoger4jHTMLLayoutTest] - test log4j mail appender.
+2013-06-17 11:02:44,578 [main] DEBUG [cn.coolinc.web.ChangeLogLevelContollerTest] - the message is display.

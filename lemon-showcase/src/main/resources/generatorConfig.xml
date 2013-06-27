@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+<classPathEntry location="./lib/mysql-connector-java-5.1.22.jar"/>
+  <context id="MySQLTables" targetRuntime="MyBatis3">
+      <commentGenerator>
+	  <property name="suppressAllComments" value="true" />
+	  <property name="suppressDate" value="true" />
+	</commentGenerator>
+	
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" 
+    connectionURL="jdbc:mysql://localhost:3306/lemon?characterEncoding=utf8" 
+    userId="root" 
+    password="root" />
+    
+ 	<javaModelGenerator targetPackage="gen.entity" targetProject="src/main/resources/">
+   	    <property name="enableSubPackages" value="true" />
+		<property name="trimStrings" value="true" />
+    </javaModelGenerator>
+    
+    <sqlMapGenerator targetPackage="gen.mybatis" targetProject="src/main/resources/"/>
+    
+    <!-- 
+	<table schema="lemon" tableName="ss_code_type" domainObjectName="CodeType"/>
+	<table schema="lemon" tableName="ss_function" domainObjectName="Function"/>
+    <table schema="lemon" tableName="ss_menu" domainObjectName="Menu"/> 
+ 	<table schema="lemon" tableName="ss_role_res" domainObjectName="RoleRes"/>
+    <table schema="lemon" tableName="ss_role_staff" domainObjectName="RoleStaff"/>
+    <table schema="lemon" tableName="ss_role" domainObjectName="Role"/>
+    <table schema="lemon" tableName="ss_staff_login" domainObjectName="StaffLogin"/>
+    <table schema="lemon" tableName="ss_staff" domainObjectName="Staff"/>
+	<table schema="lemon" tableName="ss_department" domainObjectName="Department"/>
+    <table schema="lemon" tableName="ss_user" domainObjectName="User"/>
+ 	-->
+    <table schema="lemon" tableName="ldb_test" domainObjectName="Test"/>
+    
+  </context>
+</generatorConfiguration>

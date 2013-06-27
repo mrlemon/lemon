@@ -1,0 +1,106 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: "微软雅黑";
+	font-size: 12px;
+}
+
+input {
+	border: 1px solid #95B8E7;
+}
+
+.logo {
+	font-size: 22px;
+}
+
+.main-tabs .tabs-header {
+	background: none;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	color: #666;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+}
+
+.fitem input {
+	display: inline-block;
+	width: 150px;
+}
+
+.easyui-layout-west .fitem {
+	padding-left: 10px;
+}
+
+.fitem .input-200 input {
+	width: 200px;
+}
+
+#fm .rlab {
+	padding-left: 30px;
+}
+
+.query-table {
+	padding-top: 5px;
+	table-layout: fixed;
+}
+
+.query-table .ltd {
+	width: 55px;
+}
+
+.query-table input {
+	width: 150px;
+}
+
+.query-table .operate {
+	height: 36px;
+}
+
+.query-table .operate a{
+	margin-left: 15px;
+	*margin-left: 7px;
+}
+
+.dlg-table {
+	table-layout: fixed;
+}
+
+.dlg-table .ltd {
+	width: 100px;
+	text-align: left;
+}
+
+.dlg-table .rtd input {
+	width: 200px;
+}
+
+.dlg-table .rtd .combo {
+	width: 198px;
+}
+.dlg-table .rtd .combo-text {
+	width: 198px;
+}
+
+.icon{
+	display: inline-block;
+	vertical-align: baseline;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	font-size: 12px;
+	padding: 0;
+	margin: 0;
+}
