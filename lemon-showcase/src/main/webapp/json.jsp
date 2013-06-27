@@ -21,6 +21,8 @@
 	dataType : "json",
 	type : "POST"
 }); 
+ 
+ 
 
 /* $.ajax({ //请求将成功
 	url: "/foo",
@@ -47,6 +49,5 @@
 	 });
 
 </script>
-
 </body>
 </html>
